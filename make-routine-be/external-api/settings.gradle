@@ -1,1 +1,3 @@
 rootProject.name = 'external-api'
+include 'infra-structure'
+include 'domain-core'
