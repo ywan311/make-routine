@@ -1,1 +1,6 @@
 rootProject.name = 'MakeRoutine'
+include 'domain-core'
+include 'external-api'
+include 'auth'
+include 'infra-structure'
+include 'push-alert'
