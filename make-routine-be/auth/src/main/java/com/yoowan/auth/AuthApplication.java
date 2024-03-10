@@ -1,13 +1,13 @@
-package com.yoowan.domaincore;
+package com.yoowan.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DomainCoreApplication {
+public class AuthApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(DomainCoreApplication.class, args);
+        SpringApplication.run(AuthApplication.class, args);
     }
 
 }
