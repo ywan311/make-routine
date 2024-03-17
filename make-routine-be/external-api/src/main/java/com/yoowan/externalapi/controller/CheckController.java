@@ -1,5 +1,6 @@
 package com.yoowan.externalapi.controller;
 
+import com.yoowan.externalapi.dto.AddCheckRequest;
 import com.yoowan.externalapi.service.CheckService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,12 +18,17 @@ public class CheckController {
     private final CheckService checkService;
 
     @GetMapping("")
-    public Flux<ResponseEntity<?>> getCheckList (@RequestParam(name = "searchDate")Instant today) {
+    public ResponseEntity<Flux<?>> getCheckList (@RequestParam(name = "searchDate")Instant today) {
         return null;
     }
 
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<?>> getCheckById (@PathVariable("id")Long id) {
-        return null;
+    public ResponseEntity<Mono<?>> getCheckById (@PathVariable("id")Long id) {
+        return ResponseEntity.ok(checkService.getCheck(id));
+    }
+
+    @PostMapping("")
+    public ResponseEntity<Flux<?>> addCheckDateRange(@RequestBody AddCheckRequest request){
+        return ResponseEntity.ok(checkService.addCheckByDateRange(request));
     }
 }
