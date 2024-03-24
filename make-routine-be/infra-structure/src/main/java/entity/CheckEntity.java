@@ -1,4 +1,4 @@
-package com.yoowan.domaincore.model.entity;
+package entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,7 +1,7 @@
-package com.yoowan.externalapi.service;
+package com.yoowan.domaincore.service;
 
-import com.yoowan.domaincore.model.entity.CheckEntity;
-import com.yoowan.externalapi.dto.AddCheckRequest;
+
+import entity.CheckEntity;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -13,5 +13,5 @@ public interface CheckService {
 
     Mono<CheckEntity> getCheck(Long id);
 
-    Flux<CheckEntity> addCheckByDateRange(AddCheckRequest request);
+//    Flux<CheckEntity> addCheckByDateRange(AddCheckRequest request);
 }

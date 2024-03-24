@@ -1,4 +1,4 @@
-package com.yoowan.domaincore.model.entity;
+package entity;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

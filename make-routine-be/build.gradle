@@ -1,33 +1,114 @@
-plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.2.2'
-	id 'io.spring.dependency-management' version '1.1.4'
-}
-
-group = 'com.yoowan'
-version = '0.0.1-SNAPSHOT'
-
-java {
-	sourceCompatibility = '17'
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
+buildscript {
+	ext {
+		springBootVersion = '3.2.2'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+		classpath "io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE"
 	}
 }
 
-repositories {
-	mavenCentral()
+subprojects {
+	apply plugin :  'java'
+	apply plugin :  'org.springframework.boot'
+	apply plugin :  'io.spring.dependency-management'
+
+	group = 'com.yoowan'
+	version = '0.0.1-SNAPSHOT'
+
+	java {
+		sourceCompatibility = '17'
+	}
+
+	configurations {
+		compileOnly {
+			extendsFrom annotationProcessor
+		}
+	}
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		annotationProcessor 'org.projectlombok:lombok'
+	}
+
+	tasks.named('test') {
+		useJUnitPlatform()
+	}
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	annotationProcessor 'org.projectlombok:lombok'
+project(':infra-structure') {
+	// 공통 코드
+
+	bootJar { enabled = false } // core 은 bootJar 로 패키징 할 필요 없음
+	jar { enabled = true }
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-webflux'
+		runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+project(':infra-structure') {
+	// 공통 코드
+
+	bootJar { enabled = false } // core 은 bootJar 로 패키징 할 필요 없음
+	jar { enabled = true }
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-webflux'
+		runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
+}
+
+project(':domain-core') {
+	bootJar { enabled = false }
+	jar { enabled = false }
+
+	dependencies {
+		implementation project(':infra-structure')
+
+		compileOnly 'org.projectlombok:lombok'
+		implementation 'org.springframework.boot:spring-boot-starter'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-webflux'
+		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
+}
+
+project(':external-api') {
+	bootJar { enabled = true }
+	jar { enabled = false }
+
+	dependencies {
+		implementation project(':infra-structure')
+		implementation project(':domain-core')
+
+
+		compileOnly 'org.projectlombok:lombok'
+		annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+		annotationProcessor 'org.projectlombok:lombok'
+		implementation 'org.springframework.boot:spring-boot-starter'
+		implementation 'org.springframework.boot:spring-boot-starter-webflux'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springdoc:springdoc-openapi-starter-webflux-ui:2.4.0'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'io.projectreactor:reactor-test'
+	}
 }
